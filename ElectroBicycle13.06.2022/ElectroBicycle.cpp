@@ -1,6 +1,18 @@
 #include <iostream>
 using namespace std;
 
+class iNamebale {
+public:
+	virtual const char* getName()const = 0;
+	virtual void setName(const char*) = 0;
+};
+
+// только для VS C++(лучше забыть пока не работую на майкрософт)
+__interface iPrintable { 
+	const char* getName()const;
+	void setName(const char*);
+};
+
 class Transport {
 public:
 	Transport(int numberOfSeats, int maxVelocity, int weight)
@@ -24,6 +36,7 @@ public:
 	int getWeight() const{
 		return weight;
 	}
+	virtual void fule() = 0;
 private:
 	int numberOfSeats;
 	int maxVelocity; // скорость на английском;
@@ -68,15 +81,28 @@ public:
 	int getNumberOfPedals() {
 		return numberOfPedals;
 	}
+	void fule() override{
+		cout << "Human power!" << endl;
+	}
 private:
 	int numberOfPedals;
 };
 
 class Scate : public Musscular { //Самокаты
+public:
+	void fule() override {
+		cout << "Human power!" << endl;
+	}
+private:
 
 };
 
 class ICE : public Motor {
+public:
+	void fule() override {
+		cout << "Petrol!" << endl;
+	}
+private:
 
 };
 
@@ -87,10 +113,12 @@ public:
 	void setAutopilot(bool autopilot) {
 		autopilot = autopilot;
 	}
-	bool getAutopilot() {
-		/*autopilot ? cout << "Autopilot yes" << endl
-			: cout << "No autopilot" << endl;*/
-		return autopilot;
+	void getAutopilot() {
+		//autopilot ? cout << "Autopilot yes" << endl : cout << "No autopilot" << endl;
+		autopilot ? true : false;
+	}
+	void fule() override {
+		cout << "Electicety!" << endl;
 	}
 private:
 	bool autopilot;
@@ -99,6 +127,9 @@ private:
 class electricBike : public Bicycle, public electricCar{
 public:
 	electricBike() :Bicycle(0), electricCar(true), Transport(1, 15, 600) {}
+	void fule() override {
+		cout << "Electicety!" << endl;
+	}
 };
 
 int main() {
@@ -106,7 +137,10 @@ int main() {
 	electricBike eb;
 
 	eb.getAutopilot();
-	eb.getMaxVelocity();
+	eb.setAutopilot(true);
+	if (eb.getMaxVelocity())
+		cout << "Autopilot yes" << endl;
+	eb.fule();
 
 	return 0;
 }
